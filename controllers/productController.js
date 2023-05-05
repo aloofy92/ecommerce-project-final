@@ -1,40 +1,40 @@
-const Blog = require("../models/Blog");
+const Products = require("../models/product");
 
-async function getAllBlogs(req, res, next) {
+async function getAllProducts(req, res, next) {
 	try {
-		const allBlogs = await Blog.find({});
-		res.json({ success: true, blogs: allBlogs });
+		const allProducts = await Products.find({});
+		res.json({ success: true, products: allProducts });
 	} catch (error) {
 		res.json({ success: false, message: error });
 	}
 }
 
-async function createBlog(req, res) {
+async function createProducts(req, res) {
 	try {
-		const newBlog = new Blog({
+		const newProduct = new Products({
 			title: req.body.title,
 			author: req.body.author,
 			text: req.body.text,
 			category: req.body.category.split(","),
 		});
-		const response = await newBlog.save();
-		res.json({ success: true, addedBlog: response });
+		const response = await newProducts.save();
+		res.json({ success: true, addedProducts: response });
 	} catch (error) {
 		console.log(error);
 		res.json({ success: false, message: error });
 	}
 }
 
-async function getOneBlogById(req, res) {
+async function getOneProductById(req, res) {
 	try {
 		//console.log(req.params);
 		const { idToGet } = req.params;
 		console.log(idToGet);
 
-		const foundBlog = await Blog.findOne({ id: idToGet });
+		const foundProducts = await Products.findOne({ id: idToGet });
 		//check if the blog exists
 		//throw will move to catch
-		if (foundBlog === null) throw "Blog not found";
+		if (foundProducts === null) throw "Product not found";
 
 		res.json({ success: true, blog: foundBlog });
 	} catch (error) {
@@ -43,26 +43,26 @@ async function getOneBlogById(req, res) {
 	}
 }
 
-async function updateOneBlogById(req, res) {
+async function updateOneProductById(req, res) {
 	try {
 		const { idToUpdate } = req.params;
 
-		const updatedBlog = await Blog.findOneAndUpdate(
+		const updatedProduct = await Products.findOneAndUpdate(
 			{ id: idToUpdate },
 			req.body
 		);
 		// const updatedBlog = Blog.updateOne({id: req.params.id}, req.body);
-		res.json({ success: true, blogUpdate: updatedBlog });
+		res.json({ success: true, productsUpdate: updatedProduct });
 	} catch (error) {
 		console.log(error);
 		res.json({ success: false, message: error });
 	}
 }
-async function deleteOneBlogById(req, res) {
+async function deleteOneProductById(req, res) {
 	try {
 		const { idToDelete } = req.params;
-		const deletedBlog = await Blog.findOneAndDelete({ id: idToDelete });
-		res.json({ success: true, deleteBlog: deletedBlog });
+		const deletedProduct = await Products.findOneAndDelete({ id: idToDelete });
+		res.json({ success: true, deleteProducts: deletedProduct });
 	} catch (error) {
 		console.log(error);
 		res.json({ success: false, message: error });
@@ -70,9 +70,9 @@ async function deleteOneBlogById(req, res) {
 }
 
 module.exports = {
-	getAllBlogs,
-	createBlog,
-	getOneBlogById,
-	updateOneBlogById,
-	deleteOneBlogById,
+	getAllProducts,
+	createProducts,
+	getOneProductById,
+	updateOneProductById,
+	deleteOneProductById,
 };
